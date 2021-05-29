@@ -1,2 +1,2 @@
-rootProject.name = "Diskord"
+rootProject.name = "diskord"
 
