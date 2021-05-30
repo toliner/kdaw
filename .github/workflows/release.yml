@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: chmod +r ./build.gradle.kts
-      - run: chmod +x ./auto_release.sh
+      - run: chmod +x ./release.sh
       - name: Check if it is releasable
         run: ./release.sh
         env:
