@@ -1,17 +1,13 @@
 package dev.kotx.diskord
 
+import dev.kotx.diskord.event.Event
+
 class DiskordTest {
     fun launchTest() {
-        val diskord = Diskord.create("<< insert bot token here >>") {
-            /**
-             * listen<ServerMessageCreateEvent> {
-             *      println("[Message] ${it.server} | ${it.channel} | ${it.user} | ${it.text}")
-             *
-             *      it.reply("hi!")
-             * }
-             *
-             * listen(ListenerA, ListenerB(), ListenerC(param1, param2))
-             */
+        Diskord.create("<< insert bot token here >>") {
+            listen<Event> {
+
+            }
         }
     }
 }
