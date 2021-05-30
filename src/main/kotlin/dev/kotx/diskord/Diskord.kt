@@ -1,19 +1,17 @@
 package dev.kotx.diskord
 
-class Diskord(
+import dev.kotx.diskord.event.Event
+import dev.kotx.diskord.event.EventHandler
+import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
+import kotlin.reflect.full.functions
+import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.jvm.reflect
+
+abstract class Diskord(
     val token: String
 ) {
-
-    class Builder(
-        private val token: String
-    ) {
-
-        fun build(): Diskord {
-            return Diskord(token)
-        }
-    }
-
     companion object {
-        fun create(token: String, block: Builder.() -> Unit): Diskord = Builder(token).apply(block).build()
+        fun create(token: String, block: DiskordBuilder.() -> Unit): Diskord = DiskordBuilder(token).apply(block).build()
     }
 }
