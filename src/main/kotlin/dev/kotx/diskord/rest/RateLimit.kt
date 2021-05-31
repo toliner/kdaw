@@ -5,6 +5,7 @@ import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.util.*
+import kotlinx.coroutines.*
 import java.util.concurrent.*
 
 class RateLimit {
@@ -19,7 +20,16 @@ class RateLimit {
             scope.requestPipeline.intercept(HttpRequestPipeline.Send) {
                 val hash = context.url.encodedPath.hashCode()
 
-                limits[hash]?.limit
+                if (limits[hash] == null) {
+                    proceed()
+                    return@intercept
+                }
+
+                if (limits[hash]!!.remaining < 1) {
+                    delay(limits[hash]!!.reset - System.currentTimeMillis())
+                    proceed()
+                    return@intercept
+                }
 
                 proceed()
             }
