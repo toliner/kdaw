@@ -1,17 +1,13 @@
 package dev.kotx.diskord
 
-import dev.kotx.diskord.event.Event
-import dev.kotx.diskord.event.EventHandler
-import kotlin.reflect.KClass
-import kotlin.reflect.KFunction
-import kotlin.reflect.full.functions
-import kotlin.reflect.full.isSubclassOf
-import kotlin.reflect.jvm.reflect
+import org.slf4j.*
 
 abstract class Diskord(
     val token: String
 ) {
     companion object {
+        internal val LOGGER = LoggerFactory.getLogger("Diskord")
+        internal val API_VERSION = "9"
         fun create(token: String, block: DiskordBuilder.() -> Unit): Diskord = DiskordBuilder(token).apply(block).build()
     }
 }
