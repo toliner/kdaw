@@ -5,7 +5,7 @@
 <div align="center">
     <a href="https://github.com/Kotlin-Chan/diskord"><img src="https://img.shields.io/github/workflow/status/Kotlin-Chan/diskord/Build?style=flat-square" alt="Build Result"></a>
     <a href="https://jitpack.io/Kotlin-Chan/diskord"><img src="https://img.shields.io/jitpack/v/github/Kotlin-Chan/diskord?label=Version&style=flat-square&color=blueviolet" alt="jitpack release version"></a>
-    <a href="https://opensource.org/licenses/mit-license.php"><img src="https://img.shields.io/static/v1?label=License&message=Mit&style=flat-square&color=blue" alt="License"></a>
+    <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/static/v1?label=License&message=Apache 2.0&style=flat-square&color=blue" alt="License"></a>
     <a href="https://twitter.com/kotx__"><img src="https://img.shields.io/static/v1?label=Developer&message=Kotx__&style=flat-square&color=orange" alt="developer"></a>
 </div>
 
