@@ -1,16 +1,13 @@
 package dev.kotx.diskord.rest
 
 import dev.kotx.diskord.*
-import dev.kotx.diskord.util.*
+import dev.kotx.diskord.util.JsonBuilder
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.sync.*
 import kotlinx.serialization.json.*
-import java.util.concurrent.*
 
 class RestClient(
     private val diskord: DiskordImpl
@@ -25,7 +22,19 @@ class RestClient(
         }
     }
 
-    suspend fun request(url: String, method: HttpMethod = HttpMethod.Get, data: JsonObject? = null) {
+    suspend fun request(
+        endPoint: EndPoint,
+        data: JsonBuilder.() -> Unit = {}
+    ) {
+        val response = client.request<HttpStatement>(Diskord.ENDPOINT + endPoint.url) {
+            method = endPoint.method
 
+            val json = JsonBuilder().apply(data).build()
+
+            if (endPoint.method == HttpMethod.Get)
+                json.entries.filter { it.value is JsonPrimitive }.forEach { parameter(it.key, it.value.toString()) }
+            else
+                body = json.toString()
+        }
     }
 }
