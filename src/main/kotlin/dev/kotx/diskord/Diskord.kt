@@ -12,4 +12,6 @@ abstract class Diskord(
 
         fun create(token: String, block: DiskordBuilder.() -> Unit = {}): Diskord = DiskordBuilder(token).apply(block).build()
     }
+
+    abstract suspend fun test()
 }
