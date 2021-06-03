@@ -8,6 +8,8 @@ abstract class Diskord(
     companion object {
         internal val LOGGER = LoggerFactory.getLogger("Diskord")
 
-        fun create(token: String, block: DiskordBuilder.() -> Unit): Diskord = DiskordBuilder(token).apply(block).build()
+        internal const val ENDPOINT = "https://discord.com/api/v9"
+
+        fun create(token: String, block: DiskordBuilder.() -> Unit = {}): Diskord = DiskordBuilder(token).apply(block).build()
     }
 }
