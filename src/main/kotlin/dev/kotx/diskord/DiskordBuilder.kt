@@ -1,12 +1,9 @@
 package dev.kotx.diskord
 
-import dev.kotx.diskord.event.Event
-import dev.kotx.diskord.event.EventHandler
-import kotlin.reflect.KClass
-import kotlin.reflect.KFunction
-import kotlin.reflect.full.functions
-import kotlin.reflect.full.isSubclassOf
-import kotlin.reflect.jvm.reflect
+import dev.kotx.diskord.event.*
+import kotlin.reflect.*
+import kotlin.reflect.full.*
+import kotlin.reflect.jvm.*
 
 class DiskordBuilder(
     private val token: String
