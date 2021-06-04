@@ -91,28 +91,28 @@ open class EndPoint(
         class Delete(guildId: Long) : Guild(HttpMethod.Delete, "/$guildId")
         class ListRegion(guildId: Long) : Guild(HttpMethod.Get, "/$guildId/regions")
         class ListInvite(guildId: Long) : Guild(HttpMethod.Get, "/$guildId/invites")
-        class GetVanityUrl(guildId: Long): Guild(HttpMethod.Get, "/$guildId/vanity-url")
+        class GetVanityUrl(guildId: Long) : Guild(HttpMethod.Get, "/$guildId/vanity-url")
 
         open class WelcomeScreen(method: HttpMethod, guildId: Long) : Guild(method, "/$guildId/welcome-screen") {
-            class Get(guildId: Long): WelcomeScreen(HttpMethod.Get, guildId)
-            class Modify(guildId: Long): WelcomeScreen(HttpMethod.Patch, guildId)
+            class Get(guildId: Long) : WelcomeScreen(HttpMethod.Get, guildId)
+            class Modify(guildId: Long) : WelcomeScreen(HttpMethod.Patch, guildId)
         }
 
         open class VoiceState(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId/voice-states$path") {
-            class Update(guildId: Long): VoiceState(HttpMethod.Patch, guildId, "/@me")
-            class UpdateOwn(guildId: Long, userId: Long): VoiceState(HttpMethod.Get, guildId, "/$userId")
+            class Update(guildId: Long) : VoiceState(HttpMethod.Patch, guildId, "/@me")
+            class UpdateOwn(guildId: Long, userId: Long) : VoiceState(HttpMethod.Get, guildId, "/$userId")
         }
 
         open class Integration(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId/integrations$path") {
-            class List(guildId: Long): Integration(HttpMethod.Get, guildId)
-            class Delete(guildId: Long, integrationId: Long): Integration(HttpMethod.Delete, guildId, "/$integrationId")
+            class List(guildId: Long) : Integration(HttpMethod.Get, guildId)
+            class Delete(guildId: Long, integrationId: Long) : Integration(HttpMethod.Delete, guildId, "/$integrationId")
         }
 
         open class Widget(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId$path") {
-            class Get(guildId: Long): Widget(HttpMethod.Get, guildId, "/widget.json")
-            class GetSetting(guildId: Long): Widget(HttpMethod.Get, guildId, "/widget")
-            class GetImage(guildId: Long): Widget(HttpMethod.Get, guildId, "/widget.png")
-            class Modify(guildId: Long): Widget(HttpMethod.Patch, guildId, "/widget")
+            class Get(guildId: Long) : Widget(HttpMethod.Get, guildId, "/widget.json")
+            class GetSetting(guildId: Long) : Widget(HttpMethod.Get, guildId, "/widget")
+            class GetImage(guildId: Long) : Widget(HttpMethod.Get, guildId, "/widget.png")
+            class Modify(guildId: Long) : Widget(HttpMethod.Patch, guildId, "/widget")
         }
 
         open class Channel(method: HttpMethod, guildId: Long) : Guild(method, "/$guildId/channels") {
@@ -121,68 +121,93 @@ open class EndPoint(
             class ModifyPosition(guildId: Long) : Channel(HttpMethod.Patch, guildId)
         }
 
-        open class Member(method: HttpMethod, guildId: Long, path: String = ""): Guild(method, "/$guildId/members$path") {
-            class Get(guildId: Long, userId: Long): Member(HttpMethod.Get, guildId, "/$userId")
-            class List(guildId: Long): Member(HttpMethod.Get, guildId)
-            class Search(guildId: Long): Member(HttpMethod.Get, guildId, "/search")
-            class Add(guildId: Long, userId: Long): Member(HttpMethod.Get, guildId, "/$userId")
-            class Remove(guildId: Long, userId: Long): Member(HttpMethod.Delete, guildId, "/$userId")
-            class Modify(guildId: Long, userId: Long): Member(HttpMethod.Patch, guildId, "/$userId")
-            class ModifyOwnNick(guildId: Long): Member(HttpMethod.Patch, guildId, "/@me/nick")
+        open class Member(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId/members$path") {
+            class Get(guildId: Long, userId: Long) : Member(HttpMethod.Get, guildId, "/$userId")
+            class List(guildId: Long) : Member(HttpMethod.Get, guildId)
+            class Search(guildId: Long) : Member(HttpMethod.Get, guildId, "/search")
+            class Add(guildId: Long, userId: Long) : Member(HttpMethod.Get, guildId, "/$userId")
+            class Remove(guildId: Long, userId: Long) : Member(HttpMethod.Delete, guildId, "/$userId")
+            class Modify(guildId: Long, userId: Long) : Member(HttpMethod.Patch, guildId, "/$userId")
+            class ModifyOwnNick(guildId: Long) : Member(HttpMethod.Patch, guildId, "/@me/nick")
 
-            open class Role(method: HttpMethod, guildId: Long, userId: Long, roleId: Long): Member(method, guildId, "/$userId/roles/$roleId") {
-                class Add(guildId: Long, userId: Long, roleId: Long): Role(HttpMethod.Put, guildId, userId, roleId)
-                class Remove(guildId: Long, userId: Long, roleId: Long): Role(HttpMethod.Delete, guildId, userId, roleId)
+            open class Role(method: HttpMethod, guildId: Long, userId: Long, roleId: Long) : Member(method, guildId, "/$userId/roles/$roleId") {
+                class Add(guildId: Long, userId: Long, roleId: Long) : Role(HttpMethod.Put, guildId, userId, roleId)
+                class Remove(guildId: Long, userId: Long, roleId: Long) : Role(HttpMethod.Delete, guildId, userId, roleId)
             }
         }
 
-        open class Ban(method: HttpMethod, guildId: Long, path: String = ""): Guild(method, "/$guildId/bans$path") {
-            class List(guildId: Long): Ban(HttpMethod.Get, guildId)
-            class Get(guildId: Long, userId: Long): Ban(HttpMethod.Get, guildId, "/$userId")
-            class Create(guildId: Long, userId: Long): Ban(HttpMethod.Put, guildId, "/$userId")
-            class Remove(guildId: Long, userId: Long): Ban(HttpMethod.Delete, guildId, "/$userId")
+        open class Ban(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId/bans$path") {
+            class List(guildId: Long) : Ban(HttpMethod.Get, guildId)
+            class Get(guildId: Long, userId: Long) : Ban(HttpMethod.Get, guildId, "/$userId")
+            class Create(guildId: Long, userId: Long) : Ban(HttpMethod.Put, guildId, "/$userId")
+            class Remove(guildId: Long, userId: Long) : Ban(HttpMethod.Delete, guildId, "/$userId")
         }
 
-        open class Role(method: HttpMethod, guildId: Long, path: String = ""): Guild(method, "/$guildId/roles$path") {
-            class List(guildId: Long): Role(HttpMethod.Get, guildId)
-            class Create(guildId: Long): Role(HttpMethod.Post, guildId)
-            class ModifyPosition(guildId: Long): Role(HttpMethod.Patch, guildId)
-            class Modify(guildId: Long, roleId: Long): Role(HttpMethod.Patch, guildId, "/$roleId")
-            class Delete(guildId: Long, roleId: Long): Role(HttpMethod.Delete, guildId, "/$roleId")
+        open class Role(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId/roles$path") {
+            class List(guildId: Long) : Role(HttpMethod.Get, guildId)
+            class Create(guildId: Long) : Role(HttpMethod.Post, guildId)
+            class ModifyPosition(guildId: Long) : Role(HttpMethod.Patch, guildId)
+            class Modify(guildId: Long, roleId: Long) : Role(HttpMethod.Patch, guildId, "/$roleId")
+            class Delete(guildId: Long, roleId: Long) : Role(HttpMethod.Delete, guildId, "/$roleId")
         }
 
-        open class Prune(method: HttpMethod, guildId: Long): Guild(method, "/$guildId/prune") {
-            class Get(guildId: Long): Prune(HttpMethod.Get, guildId)
-            class Begin(guildId: Long): Prune(HttpMethod.Post, guildId)
+        open class Prune(method: HttpMethod, guildId: Long) : Guild(method, "/$guildId/prune") {
+            class Get(guildId: Long) : Prune(HttpMethod.Get, guildId)
+            class Begin(guildId: Long) : Prune(HttpMethod.Post, guildId)
         }
 
-        open class Template(method: HttpMethod, path: String = ""): Guild(method, path) {
-            class Get(templateCode: String): Template(HttpMethod.Get, "/templates/$templateCode")
-            class CreateGuildFromCode(templateCode: String): Template(HttpMethod.Post, "/templates/$templateCode")
-            class List(guildId: Long): Template(HttpMethod.Get, "/$guildId/templates")
-            class Create(guildId: Long): Template(HttpMethod.Post, "/$guildId/templates")
-            class Sync(guildId: Long, templateCode: String): Template(HttpMethod.Put, "/$guildId/templates/$templateCode")
-            class Modify(guildId: Long, templateCode: String): Template(HttpMethod.Patch, "/$guildId/templates/$templateCode")
-            class Delete(guildId: Long, templateCode: String): Template(HttpMethod.Delete, "/$guildId/templates/$templateCode")
+        open class Template(method: HttpMethod, path: String = "") : Guild(method, path) {
+            class Get(templateCode: String) : Template(HttpMethod.Get, "/templates/$templateCode")
+            class CreateGuildFromCode(templateCode: String) : Template(HttpMethod.Post, "/templates/$templateCode")
+            class List(guildId: Long) : Template(HttpMethod.Get, "/$guildId/templates")
+            class Create(guildId: Long) : Template(HttpMethod.Post, "/$guildId/templates")
+            class Sync(guildId: Long, templateCode: String) : Template(HttpMethod.Put, "/$guildId/templates/$templateCode")
+            class Modify(guildId: Long, templateCode: String) : Template(HttpMethod.Patch, "/$guildId/templates/$templateCode")
+            class Delete(guildId: Long, templateCode: String) : Template(HttpMethod.Delete, "/$guildId/templates/$templateCode")
         }
     }
 
-    open class Invite(method: HttpMethod, inviteCode: String): EndPoint(method, "/invites/$inviteCode") {
-        class Get(inviteCode: String): Invite(HttpMethod.Get, inviteCode)
-        class Delete(inviteCode: String): Invite(HttpMethod.Delete, inviteCode)
+    open class Invite(method: HttpMethod, inviteCode: String) : EndPoint(method, "/invites/$inviteCode") {
+        class Get(inviteCode: String) : Invite(HttpMethod.Get, inviteCode)
+        class Delete(inviteCode: String) : Invite(HttpMethod.Delete, inviteCode)
     }
 
-    open class StageInstance(method: HttpMethod, path: String = ""): EndPoint(method, "/stage-instances$path") {
-        class Create: StageInstance(HttpMethod.Post)
-        class Get(channelId: Long): StageInstance(HttpMethod.Get, "/$channelId")
-        class Update(channelId: Long): StageInstance(HttpMethod.Patch, "/$channelId")
-        class Delete(channelId: Long): StageInstance(HttpMethod.Delete, "/$channelId")
+    open class StageInstance(method: HttpMethod, path: String = "") : EndPoint(method, "/stage-instances$path") {
+        class Create : StageInstance(HttpMethod.Post)
+        class Get(channelId: Long) : StageInstance(HttpMethod.Get, "/$channelId")
+        class Update(channelId: Long) : StageInstance(HttpMethod.Patch, "/$channelId")
+        class Delete(channelId: Long) : StageInstance(HttpMethod.Delete, "/$channelId")
     }
 
-    class User(method: HttpMethod, path: String = ""): EndPoint(method, "/users$path") {
-
+    open class User(method: HttpMethod, path: String = "") : EndPoint(method, "/users$path") {
+        class GetOwn : User(HttpMethod.Get, "/@me")
+        class Get(userId: Long) : User(HttpMethod.Get, "/$userId")
+        class ModifyOwn : User(HttpMethod.Patch, "/@me")
+        class OwnGuilds : User(HttpMethod.Get, "/@me/guilds")
+        class LeaveGuild(guildId: Long) : User(HttpMethod.Delete, "/@me/guilds/$guildId")
+        class CreateDM : User(HttpMethod.Post, "/@me/channels")
+        class GetConnection : User(HttpMethod.Get, "/@me/connections")
     }
 
-    class Voice
-    class Webhook
+    class Voice {
+        class ListRegion : EndPoint(HttpMethod.Get, "/voice/regions")
+    }
+
+    class Webhook {
+        class Create(channelId: Long) : EndPoint(HttpMethod.Post, "/channels/$channelId/webhooks")
+        class ListChannel(channelId: Long) : EndPoint(HttpMethod.Get, "/channels/$channelId/webhooks")
+        class ListGuild(guildId: Long) : EndPoint(HttpMethod.Get, "/guilds/$guildId/webhooks")
+        class Get(webhookId: Long) : EndPoint(HttpMethod.Get, "/webhooks/$webhookId")
+        class GetWithToken(webhookId: Long, token: String) : EndPoint(HttpMethod.Get, "/webhooks/$webhookId/$token")
+        class Modify(webhookId: Long) : EndPoint(HttpMethod.Patch, "/webhooks/$webhookId")
+        class ModifyWithToken(webhookId: Long, token: String) : EndPoint(HttpMethod.Patch, "/webhooks/$webhookId/$token")
+        class Delete(webhookId: Long) : EndPoint(HttpMethod.Delete, "/webhooks/$webhookId")
+        class DeleteWithToken(webhookId: Long, token: String) : EndPoint(HttpMethod.Delete, "/webhooks/$webhookId/$token")
+        class Execute(webhookId: Long, token: String) : EndPoint(HttpMethod.Post, "/webhooks/$webhookId/$token")
+        class ExecuteSlack(webhookId: Long, token: String) : EndPoint(HttpMethod.Post, "/webhooks/$webhookId/$token/slack")
+        class ExecuteGithub(webhookId: Long, token: String) : EndPoint(HttpMethod.Post, "/webhooks/$webhookId/$token/github")
+        class GetMessage(webhookId: Long, token: String, messageId: Long) : EndPoint(HttpMethod.Get, "/webhooks/$webhookId/$token/messages/$messageId")
+        class EditMessage(webhookId: Long, token: String, messageId: Long) : EndPoint(HttpMethod.Patch, "/webhooks/$webhookId/$token/messages/$messageId")
+        class DeleteMessage(webhookId: Long, token: String, messageId: Long) : EndPoint(HttpMethod.Delete, "/webhooks/$webhookId/$token/messages/$messageId")
+    }
 }
