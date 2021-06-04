@@ -41,17 +41,17 @@ open class EndPoint(
         open class Thread(method: HttpMethod, channelId: Long, path: String = "") : Channel(method, channelId, path) {
             class StartWithMessage(channelId: Long, messageId: Long) : Thread(HttpMethod.Post, channelId, "/messages/$messageId/threads")
             class StartWithoutMessage(channelId: Long) : Thread(HttpMethod.Post, channelId, "/threads")
-            class ListActive(channelId: Long): Thread(HttpMethod.Get, channelId, "/threads/active")
-            class ListPublicArchived(channelId: Long): Thread(HttpMethod.Get, channelId, "/threads/archived/public")
-            class ListPrivateArchived(channelId: Long): Thread(HttpMethod.Get, channelId, "/threads/archived/private")
-            class ListJoinedPrivateArchived(channelId: Long): Thread(HttpMethod.Get, channelId, "/users/@me/threads/archived/private")
+            class ListActive(channelId: Long) : Thread(HttpMethod.Get, channelId, "/threads/active")
+            class ListPublicArchived(channelId: Long) : Thread(HttpMethod.Get, channelId, "/threads/archived/public")
+            class ListPrivateArchived(channelId: Long) : Thread(HttpMethod.Get, channelId, "/threads/archived/private")
+            class ListJoinedPrivateArchived(channelId: Long) : Thread(HttpMethod.Get, channelId, "/users/@me/threads/archived/private")
 
             open class Members(method: HttpMethod, channelId: Long, path: String = "") : Thread(method, channelId, "/thread-members$path") {
                 class Join(channelId: Long) : Members(HttpMethod.Put, channelId, "/@me")
                 class Add(channelId: Long, userId: Long) : Members(HttpMethod.Put, channelId, "/$userId")
                 class Leave(channelId: Long) : Members(HttpMethod.Delete, channelId, "/@me")
                 class Remove(channelId: Long, userId: Long) : Members(HttpMethod.Delete, channelId, "/$userId")
-                class ListMember(channelId: Long) : Members(HttpMethod.Get, channelId)
+                class List(channelId: Long) : Members(HttpMethod.Get, channelId)
             }
         }
 
@@ -75,16 +75,76 @@ open class EndPoint(
         }
     }
 
-    open class Emoji(method: HttpMethod, guildId: Long, path: String = ""): EndPoint(method, "/guilds/$guildId/emojis$path") {
-        class List(guildId: Long): Emoji(HttpMethod.Get, guildId)
-        class Get(guildId: Long, emojiId: Long): Emoji(HttpMethod.Get, guildId, "/$emojiId")
-        class List(guildId: Long): Emoji(HttpMethod.Post, guildId)
+    open class Emoji(method: HttpMethod, guildId: Long, path: String = "") : EndPoint(method, "/guilds/$guildId/emojis$path") {
+        class List(guildId: Long) : Emoji(HttpMethod.Get, guildId)
+        class Get(guildId: Long, emojiId: Long) : Emoji(HttpMethod.Get, guildId, "/$emojiId")
+        class Create(guildId: Long) : Emoji(HttpMethod.Post, guildId)
+        class Modify(guildId: Long, emojiId: Long) : Emoji(HttpMethod.Patch, guildId, "/$emojiId")
+        class Delete(guildId: Long, emojiId: Long) : Emoji(HttpMethod.Delete, guildId, "/$emojiId")
     }
-    
-    open class Guild(method: HttpMethod, path: String = ""): EndPoint(method, "/guilds$path") {
-        class Create: Guild(HttpMethod.Post)
+
+    open class Guild(method: HttpMethod, path: String = "") : EndPoint(method, "/guilds$path") {
+        class Create : Guild(HttpMethod.Post)
+        class Get(guildId: Long) : Guild(HttpMethod.Get, "/$guildId")
+        class GetPreview(guildId: Long) : Guild(HttpMethod.Get, "/$guildId/preview")
+        class Modify(guildId: Long) : Guild(HttpMethod.Patch, "/$guildId")
+        class Delete(guildId: Long) : Guild(HttpMethod.Delete, "/$guildId")
+        class ListRegion(guildId: Long) : Guild(HttpMethod.Get, "/$guildId/regions")
+        class ListInvite(guildId: Long) : Guild(HttpMethod.Get, "/$guildId/invites")
+
+        open class Integration(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId/integrations$path") {
+            class List(guildId: Long): Integration(HttpMethod.Get, guildId)
+            class Delete(guildId: Long, integrationId: Long): Integration(HttpMethod.Delete, guildId, "/$integrationId")
+        }
+
+        open class Widget(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId$path") {
+            class Get(guildId: Long): Widget(HttpMethod.Get, guildId, "/widget.json")
+            class GetSetting(guildId: Long): Widget(HttpMethod.Get, guildId, "/widget")
+            class Modify(guildId: Long): Widget(HttpMethod.Patch, guildId, "/widget")
+        }
+
+        open class Channel(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId/channels$path") {
+            class List(guildId: Long) : Channel(HttpMethod.Get, guildId)
+            class Create(guildId: Long) : Channel(HttpMethod.Post, guildId)
+            class ModifyPosition(guildId: Long) : Channel(HttpMethod.Patch, guildId)
+        }
+
+        open class Member(method: HttpMethod, guildId: Long, path: String = ""): Guild(method, "/$guildId/members$path") {
+            class Get(guildId: Long, userId: Long): Member(HttpMethod.Get, guildId, "/$userId")
+            class List(guildId: Long): Member(HttpMethod.Get, guildId)
+            class Search(guildId: Long): Member(HttpMethod.Get, guildId, "/search")
+            class Add(guildId: Long, userId: Long): Member(HttpMethod.Get, guildId, "/$userId")
+            class Remove(guildId: Long, userId: Long): Member(HttpMethod.Delete, guildId, "/$userId")
+            class Modify(guildId: Long, userId: Long): Member(HttpMethod.Patch, guildId, "/$userId")
+            class ModifyOwnNick(guildId: Long): Member(HttpMethod.Patch, guildId, "/@me/nick")
+
+            open class Role(method: HttpMethod, guildId: Long, userId: Long, roleId: Long): Member(method, guildId, "/$userId/roles/$roleId") {
+                class Add(guildId: Long, userId: Long, roleId: Long): Role(HttpMethod.Put, guildId, userId, roleId)
+                class Remove(guildId: Long, userId: Long, roleId: Long): Role(HttpMethod.Delete, guildId, userId, roleId)
+            }
+        }
+
+        open class Ban(method: HttpMethod, guildId: Long, path: String = ""): Guild(method, "/$guildId/bans$path") {
+            class List(guildId: Long): Ban(HttpMethod.Get, guildId)
+            class Get(guildId: Long, userId: Long): Ban(HttpMethod.Get, guildId, "/$userId")
+            class Create(guildId: Long, userId: Long): Ban(HttpMethod.Put, guildId, "/$userId")
+            class Remove(guildId: Long, userId: Long): Ban(HttpMethod.Delete, guildId, "/$userId")
+        }
+
+        open class Role(method: HttpMethod, guildId: Long, path: String = ""): Guild(method, "/$guildId/roles$path") {
+            class List(guildId: Long): Role(HttpMethod.Get, guildId)
+            class Create(guildId: Long): Role(HttpMethod.Post, guildId)
+            class ModifyPosition(guildId: Long): Role(HttpMethod.Patch, guildId)
+            class Modify(guildId: Long, roleId: Long): Role(HttpMethod.Patch, guildId, "/$roleId")
+            class Delete(guildId: Long, roleId: Long): Role(HttpMethod.Delete, guildId, "/$roleId")
+        }
+
+        open class Prune(method: HttpMethod, guildId: Long, path: String = ""): Guild(method, "/$guildId/prune") {
+            class Get(guildId: Long): Prune(HttpMethod.Get, guildId)
+            class Begin(guildId: Long): Prune(HttpMethod.Post, guildId)
+        }
     }
-    
+
     class GuildTemplate
     class Invite
     class StageInstance
