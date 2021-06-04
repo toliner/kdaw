@@ -171,8 +171,18 @@ open class EndPoint(
         class Get(inviteCode: String): Invite(HttpMethod.Get, inviteCode)
         class Delete(inviteCode: String): Invite(HttpMethod.Delete, inviteCode)
     }
-    class StageInstance
-    class User
+
+    open class StageInstance(method: HttpMethod, path: String = ""): EndPoint(method, "/stage-instances$path") {
+        class Create: StageInstance(HttpMethod.Post)
+        class Get(channelId: Long): StageInstance(HttpMethod.Get, "/$channelId")
+        class Update(channelId: Long): StageInstance(HttpMethod.Patch, "/$channelId")
+        class Delete(channelId: Long): StageInstance(HttpMethod.Delete, "/$channelId")
+    }
+
+    class User(method: HttpMethod, path: String = ""): EndPoint(method, "/users$path") {
+
+    }
+
     class Voice
     class Webhook
 }
