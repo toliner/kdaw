@@ -1,6 +1,6 @@
 <h1 align="center">Kdaw</h1>
 
-<p align="center"><b>Kdaw</b>  is a lightweight <a href="https://discord.com/developers/docs/intro">Discord API</a> wrapper written in Kotlin. It can run even large scale bots stably.</p>
+<p align="center"><b>Kdaw(Kotlin Discord Api Wrapper)</b>  is a lightweight <a href="https://discord.com/developers/docs/intro">Discord API</a> wrapper written in Kotlin. It can run even large scale bots stably.</p>
 
 <div align="center">
     <a href="https://github.com/Kotlin-chan/kdaw"><img src="https://img.shields.io/github/workflow/status/Kotlin-chan/kdaw/build?style=flat-square" alt="Build Result"></a>
