@@ -1,15 +1,13 @@
 package dev.kotx.diskord.rest
 
 import dev.kotx.diskord.*
+import dev.kotx.diskord.util.*
 import dev.kotx.diskord.util.JsonBuilder
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import io.ktor.content.*
 import io.ktor.http.*
-import io.ktor.util.*
 import kotlinx.serialization.json.*
 
 class RestClient(
@@ -28,7 +26,7 @@ class RestClient(
     suspend fun request(
         endPoint: EndPoint,
         data: JsonBuilder.() -> Unit = {}
-    ) {
+    ): JsonObject? {
         val response = client.request<HttpStatement>(Diskord.ENDPOINT + endPoint.url) {
             method = endPoint.method
 
@@ -41,5 +39,11 @@ class RestClient(
                 body = json.toString()
             }
         }.execute()
+
+        return try {
+            response.readText().asJsonObject()
+        } catch (e: Exception) {
+            null
+        }
     }
 }
