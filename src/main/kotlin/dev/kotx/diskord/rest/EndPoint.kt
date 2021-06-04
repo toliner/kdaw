@@ -75,8 +75,16 @@ open class EndPoint(
         }
     }
 
-    class Emoji
-    class Guild
+    open class Emoji(method: HttpMethod, guildId: Long, path: String = ""): EndPoint(method, "/guilds/$guildId/emojis$path") {
+        class List(guildId: Long): Emoji(HttpMethod.Get, guildId)
+        class Get(guildId: Long, emojiId: Long): Emoji(HttpMethod.Get, guildId, "/$emojiId")
+        class List(guildId: Long): Emoji(HttpMethod.Post, guildId)
+    }
+    
+    open class Guild(method: HttpMethod, path: String = ""): EndPoint(method, "/guilds$path") {
+        class Create: Guild(HttpMethod.Post)
+    }
+    
     class GuildTemplate
     class Invite
     class StageInstance
