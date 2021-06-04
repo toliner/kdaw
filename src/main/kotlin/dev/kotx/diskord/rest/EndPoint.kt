@@ -91,6 +91,17 @@ open class EndPoint(
         class Delete(guildId: Long) : Guild(HttpMethod.Delete, "/$guildId")
         class ListRegion(guildId: Long) : Guild(HttpMethod.Get, "/$guildId/regions")
         class ListInvite(guildId: Long) : Guild(HttpMethod.Get, "/$guildId/invites")
+        class GetVanityUrl(guildId: Long): Guild(HttpMethod.Get, "/$guildId/vanity-url")
+
+        open class WelcomeScreen(method: HttpMethod, guildId: Long) : Guild(method, "/$guildId/welcome-screen") {
+            class Get(guildId: Long): WelcomeScreen(HttpMethod.Get, guildId)
+            class Modify(guildId: Long): WelcomeScreen(HttpMethod.Patch, guildId)
+        }
+
+        open class VoiceState(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId/voice-states$path") {
+            class Update(guildId: Long): VoiceState(HttpMethod.Patch, guildId, "/@me")
+            class UpdateOwn(guildId: Long, userId: Long): VoiceState(HttpMethod.Get, guildId, "/$userId")
+        }
 
         open class Integration(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId/integrations$path") {
             class List(guildId: Long): Integration(HttpMethod.Get, guildId)
@@ -100,10 +111,11 @@ open class EndPoint(
         open class Widget(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId$path") {
             class Get(guildId: Long): Widget(HttpMethod.Get, guildId, "/widget.json")
             class GetSetting(guildId: Long): Widget(HttpMethod.Get, guildId, "/widget")
+            class GetImage(guildId: Long): Widget(HttpMethod.Get, guildId, "/widget.png")
             class Modify(guildId: Long): Widget(HttpMethod.Patch, guildId, "/widget")
         }
 
-        open class Channel(method: HttpMethod, guildId: Long, path: String = "") : Guild(method, "/$guildId/channels$path") {
+        open class Channel(method: HttpMethod, guildId: Long) : Guild(method, "/$guildId/channels") {
             class List(guildId: Long) : Channel(HttpMethod.Get, guildId)
             class Create(guildId: Long) : Channel(HttpMethod.Post, guildId)
             class ModifyPosition(guildId: Long) : Channel(HttpMethod.Patch, guildId)
@@ -139,7 +151,7 @@ open class EndPoint(
             class Delete(guildId: Long, roleId: Long): Role(HttpMethod.Delete, guildId, "/$roleId")
         }
 
-        open class Prune(method: HttpMethod, guildId: Long, path: String = ""): Guild(method, "/$guildId/prune") {
+        open class Prune(method: HttpMethod, guildId: Long): Guild(method, "/$guildId/prune") {
             class Get(guildId: Long): Prune(HttpMethod.Get, guildId)
             class Begin(guildId: Long): Prune(HttpMethod.Post, guildId)
         }
