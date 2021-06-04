@@ -1,6 +1,7 @@
 package dev.kotx.diskord
 
 import dev.kotx.diskord.event.*
+import dev.kotx.diskord.gateway.*
 import kotlin.reflect.*
 import kotlin.reflect.full.*
 import kotlin.reflect.jvm.*
@@ -9,6 +10,7 @@ class DiskordBuilder(
     private val token: String
 ) {
     val listeners = mutableMapOf<KClass<out Event>, KFunction<Unit>>()
+    private var intents = 0
 
     @Suppress("EXPERIMENTAL_API_USAGE", "UNCHECKED_CAST")
     inline fun <reified T : Event> listen(noinline action: suspend (T) -> Unit): DiskordBuilder {
@@ -33,7 +35,13 @@ class DiskordBuilder(
         return this
     }
 
+    fun enableIntents(vararg intent: GatewayIntent): DiskordBuilder {
+        intents = intent.sumOf { it.decimal }
+
+        return this
+    }
+
     fun build(): Diskord {
-        return DiskordImpl(token)
+        return DiskordImpl(token, listeners, intents)
     }
 }
