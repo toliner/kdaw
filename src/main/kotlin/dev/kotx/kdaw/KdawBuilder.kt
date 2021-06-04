@@ -35,9 +35,8 @@ class KdawBuilder(
         return this
     }
 
-    fun enableIntents(vararg intent: GatewayIntent): KdawBuilder {
+    fun intents(vararg intent: GatewayIntent): KdawBuilder {
         intents = intent.sumOf { it.decimal }
-
         return this
     }
 
