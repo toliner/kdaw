@@ -1,6 +1,6 @@
 @file:Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
 
-package dev.kotx.diskord.entity
+package dev.kotx.kdaw.entity
 
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*

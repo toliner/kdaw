@@ -1,6 +1,6 @@
-package dev.kotx.diskord.gateway
+package dev.kotx.kdaw.gateway
 
-import dev.kotx.diskord.entity.*
+import dev.kotx.kdaw.entity.*
 import kotlin.reflect.*
 
 open class GatewayEvent(val entity: KClass<*>) {

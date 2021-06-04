@@ -1,19 +1,19 @@
-package dev.kotx.diskord
+package dev.kotx.kdaw
 
-import dev.kotx.diskord.event.*
-import dev.kotx.diskord.gateway.*
+import dev.kotx.kdaw.event.*
+import dev.kotx.kdaw.gateway.*
 import kotlin.reflect.*
 import kotlin.reflect.full.*
 import kotlin.reflect.jvm.*
 
-class DiskordBuilder(
+class KdawBuilder(
     private val token: String
 ) {
     val listeners = mutableMapOf<KClass<out Event>, KFunction<Unit>>()
     private var intents = 0
 
     @Suppress("EXPERIMENTAL_API_USAGE", "UNCHECKED_CAST")
-    inline fun <reified T : Event> listen(noinline action: suspend (T) -> Unit): DiskordBuilder {
+    inline fun <reified T : Event> listen(noinline action: suspend (T) -> Unit): KdawBuilder {
         val func = action.reflect()!!
         listeners[func.parameters[0].type.classifier as KClass<out Event>] = func
 
@@ -21,7 +21,7 @@ class DiskordBuilder(
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun listen(vararg listener: Any): DiskordBuilder {
+    fun listen(vararg listener: Any): KdawBuilder {
         listener.flatMap {
             it::class.functions
                 .filter { it.annotations.any { it is EventHandler } }
@@ -35,13 +35,13 @@ class DiskordBuilder(
         return this
     }
 
-    fun enableIntents(vararg intent: GatewayIntent): DiskordBuilder {
+    fun enableIntents(vararg intent: GatewayIntent): KdawBuilder {
         intents = intent.sumOf { it.decimal }
 
         return this
     }
 
-    fun build(): Diskord {
-        return DiskordImpl(token, listeners, intents)
+    fun build(): Kdaw {
+        return KdawImpl(token, listeners, intents)
     }
 }

@@ -1,4 +1,4 @@
-package dev.kotx.diskord.util
+package dev.kotx.kdaw.util
 
 import kotlinx.serialization.json.*
 

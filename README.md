@@ -1,10 +1,10 @@
-<h1 align="center">Diskord</h1>
+<h1 align="center">Kdaw</h1>
 
-<p align="center"><b>Diskord</b>  is a lightweight <a href="https://discord.com/developers/docs/intro">Discord API</a> wrapper written in Kotlin. It can run even large scale bots stably.</p>
+<p align="center"><b>Kdaw</b>  is a lightweight <a href="https://discord.com/developers/docs/intro">Discord API</a> wrapper written in Kotlin. It can run even large scale bots stably.</p>
 
 <div align="center">
-    <a href="https://github.com/Kotlin-chan/diskord"><img src="https://img.shields.io/github/workflow/status/Kotlin-chan/diskord/build?style=flat-square" alt="Build Result"></a>
-    <a href="https://jitpack.io/#Kotlin-chan/diskord"><img src="https://img.shields.io/jitpack/v/github/Kotlin-chan/diskord?label=Version&style=flat-square&color=blueviolet" alt="jitpack release version"></a>
+    <a href="https://github.com/Kotlin-chan/kdaw"><img src="https://img.shields.io/github/workflow/status/Kotlin-chan/kdaw/build?style=flat-square" alt="Build Result"></a>
+    <a href="https://jitpack.io/#Kotlin-chan/kdaw"><img src="https://img.shields.io/jitpack/v/github/Kotlin-chan/kdaw?label=Version&style=flat-square&color=blueviolet" alt="jitpack release version"></a>
     <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/static/v1?label=License&message=Apache%202.0&style=flat-square&color=blue" alt="License"></a>
     <a href="https://twitter.com/kotx__"><img src="https://img.shields.io/static/v1?label=Developer&message=Kotx__&style=flat-square&color=orange" alt="developer"></a>
 </div>
@@ -18,7 +18,7 @@ without notice.**
 
 ```kotlin
 fun main() {
-    Diskord.create("<< insert bot token here >>") {
+    Kdaw.create("<< insert bot token here >>") {
         listen<ServerMessageCreateEvent>(priority = 1) {
             println("[Message] ${it.server} | ${it.channel} | ${it.user} | ${it.text}")
         }
@@ -42,7 +42,7 @@ object BasicListener {
 
 ## ⚙️ Installation
 
-[![](https://img.shields.io/jitpack/v/github/Kotlin-Chan/diskord?label=Version&style=flat-square&color=blueviolet)](https://jitpack.io/Kotlin-Chan/diskord)
+[![](https://img.shields.io/jitpack/v/github/Kotlin-Chan/kdaw?label=Version&style=flat-square&color=blueviolet)](https://jitpack.io/Kotlin-Chan/kdaw)
 
 Replace `<version>` with the version you want to use of jitpack.
 
@@ -58,7 +58,7 @@ repositories {
 
 ```kotlin
 dependencies {
-    implementation("com.github.Kotlin-Chan:diskord:<version>")
+    implementation("com.github.Kotlin-Chan:kdaw:<version>")
 }
 ```
 
@@ -77,7 +77,7 @@ repositories {
 
 ```groovy
 dependencies {
-    implementation "com.github.Kotlin-Chan:diskord:<version>"
+    implementation "com.github.Kotlin-Chan:kdaw:<version>"
 }
 ```
 
@@ -102,7 +102,7 @@ dependencies {
 
 <dependency>
     <groupId>com.github.Kotlin-Chan</groupId>
-    <artifactId>diskord</artifactId>
+    <artifactId>kdaw</artifactId>
     <version>version</version>
 </dependency>
 ```

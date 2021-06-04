@@ -1,4 +1,4 @@
-package dev.kotx.diskord.gateway
+package dev.kotx.kdaw.gateway
 
 enum class OpCode(val code: Int) {
     DISPATCH(0),

@@ -1,4 +1,4 @@
-package dev.kotx.diskord.rest
+package dev.kotx.kdaw.rest
 
 import io.ktor.http.*
 

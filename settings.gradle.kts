@@ -1,3 +1,3 @@
-rootProject.name = "diskord"
+rootProject.name = "kdaw"
 
 include("testbot")

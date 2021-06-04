@@ -1,3 +1,3 @@
-package dev.kotx.diskord.event
+package dev.kotx.kdaw.event
 
 annotation class EventHandler(val priority: Int)

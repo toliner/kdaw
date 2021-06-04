@@ -1,8 +1,8 @@
-package dev.kotx.diskord.rest
+package dev.kotx.kdaw.rest
 
-import dev.kotx.diskord.*
-import dev.kotx.diskord.util.*
-import dev.kotx.diskord.util.JsonBuilder
+import dev.kotx.kdaw.*
+import dev.kotx.kdaw.util.*
+import dev.kotx.kdaw.util.JsonBuilder
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
@@ -11,15 +11,15 @@ import io.ktor.http.*
 import kotlinx.serialization.json.*
 
 class RestClient(
-    private val diskord: DiskordImpl
+    private val kdaw: KdawImpl
 ) {
     private val client = HttpClient {
         expectSuccess = false
 
         defaultRequest {
             header(HttpHeaders.Accept, "application/json")
-            header(HttpHeaders.UserAgent, "DiscordBot (https://github.com/Kotlin-Chan/diskord, development)")
-            header(HttpHeaders.Authorization, "Bot ${diskord.token}")
+            header(HttpHeaders.UserAgent, "DiscordBot (https://github.com/Kotlin-Chan/kdaw, development)")
+            header(HttpHeaders.Authorization, "Bot ${kdaw.token}")
         }
     }
 
@@ -27,7 +27,7 @@ class RestClient(
         endPoint: EndPoint,
         data: JsonBuilder.() -> Unit = {}
     ): JsonObject? {
-        val response = client.request<HttpStatement>(Diskord.ENDPOINT + endPoint.url) {
+        val response = client.request<HttpStatement>(Kdaw.ENDPOINT + endPoint.url) {
             method = endPoint.method
 
             val json = JsonBuilder().apply(data).build()

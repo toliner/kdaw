@@ -1,12 +1,12 @@
 @file:Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
 
-package dev.kotx.diskord.gateway
+package dev.kotx.kdaw.gateway
 
-import dev.kotx.diskord.*
-import dev.kotx.diskord.gateway.OpCode.*
-import dev.kotx.diskord.rest.*
-import dev.kotx.diskord.util.*
-import dev.kotx.diskord.util.JsonBuilder
+import dev.kotx.kdaw.*
+import dev.kotx.kdaw.gateway.OpCode.*
+import dev.kotx.kdaw.rest.*
+import dev.kotx.kdaw.util.*
+import dev.kotx.kdaw.util.JsonBuilder
 import io.ktor.client.*
 import io.ktor.client.features.websocket.*
 import io.ktor.client.request.*
@@ -23,7 +23,7 @@ import java.util.zip.*
 
 @OptIn(InternalAPI::class)
 class GatewayClient(
-    val diskord: DiskordImpl
+    val kdaw: KdawImpl
 ) {
     private val client = HttpClient {
         install(WebSockets)
@@ -32,8 +32,8 @@ class GatewayClient(
     private lateinit var session: DefaultClientWebSocketSession
 
     suspend fun connect() {
-        Diskord.LOGGER.debug("Connecting...")
-        val gatewayUrl = diskord.restClient.request(EndPoint(HttpMethod.Get, "/gateway"))?.getStringOrNull("url") ?: throw Exception("Failed to get gateway url.")
+        Kdaw.LOGGER.debug("Connecting...")
+        val gatewayUrl = kdaw.restClient.request(EndPoint(HttpMethod.Get, "/gateway"))?.getStringOrNull("url") ?: throw Exception("Failed to get gateway url.")
 
         session = client.request<HttpStatement>(gatewayUrl) {
             parameter("v", "9")
@@ -41,11 +41,11 @@ class GatewayClient(
             parameter("compress", "zlib-stream")
         }.receive()
 
-        Diskord.LOGGER.debug("The connection was successfully established.")
+        Kdaw.LOGGER.debug("The connection was successfully established.")
 
         if (sessionId == null) send(IDENTIFY) {
-            "token" to diskord.token
-            "intents" to diskord.intents
+            "token" to kdaw.token
+            "intents" to kdaw.intents
             "properties" to {
                 "\$os" to "?"
                 "\$browser" to "?"
@@ -53,7 +53,7 @@ class GatewayClient(
             }
         } else send(RESUME) {
             "session_id" to sessionId
-            "token" to diskord.token
+            "token" to kdaw.token
             "seq" to lastSequence
         }
 
@@ -69,7 +69,7 @@ class GatewayClient(
             is Frame.Binary -> onBinary(frame.data)
             is Frame.Close -> onClose()
             else -> {
-                Diskord.LOGGER.error("Received invalid frame.")
+                Kdaw.LOGGER.error("Received invalid frame.")
             }
         }
     }
@@ -82,7 +82,7 @@ class GatewayClient(
 
         session.send(json)
 
-        Diskord.LOGGER.debug("S: $json")
+        Kdaw.LOGGER.debug("S: $json")
     }
 
     private val buffer = mutableListOf<ByteArray>()
@@ -113,7 +113,7 @@ class GatewayClient(
 
         buffer.clear()
 
-        Diskord.LOGGER.debug("R: $text")
+        Kdaw.LOGGER.debug("R: $text")
 
         val json = try {
             text.asJsonObject()
