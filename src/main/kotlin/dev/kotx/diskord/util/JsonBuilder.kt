@@ -21,6 +21,14 @@ class JsonBuilder {
         content[this] = value
     }
 
+    infix fun String.to(builder: JsonBuilder.() -> Unit) {
+        content[this] = JsonBuilder().apply(builder).build()
+    }
+
+    infix fun String.array(builder: JsonArrayBuilder.() -> Unit) {
+        content[this] = JsonArrayBuilder().apply(builder).build()
+    }
+
     fun build() = JsonObject(content)
 }
 
