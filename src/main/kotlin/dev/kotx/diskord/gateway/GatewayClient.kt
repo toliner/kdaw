@@ -1,3 +1,5 @@
+@file:Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+
 package dev.kotx.diskord.gateway
 
 import dev.kotx.diskord.*
@@ -14,10 +16,12 @@ import io.ktor.http.cio.websocket.*
 import io.ktor.util.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
+import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import java.io.*
 import java.util.zip.*
 
+@OptIn(InternalAPI::class)
 class GatewayClient(
     val diskord: DiskordImpl
 ) {
@@ -41,7 +45,7 @@ class GatewayClient(
 
         if (sessionId == null) send(IDENTIFY) {
             "token" to diskord.token
-            "intents" to 513
+            "intents" to diskord.intents
             "properties" to {
                 "\$os" to "?"
                 "\$browser" to "?"
@@ -127,6 +131,20 @@ class GatewayClient(
     private var ready = false
     private var sessionId: String? = null
 
+    private val eventHandlers = GatewayEvent::class.nestedClasses.map {
+        var name = ""
+        var lastChar: Char? = null
+        it.simpleName!!.forEach {
+            if (lastChar?.isLowerCase() == true && it.isUpperCase())
+                name += "_"
+            lastChar = it
+            name += it
+        }
+
+        name.uppercase() to it.objectInstance as GatewayEvent
+    }.toMap()
+
+    @OptIn(InternalSerializationApi::class)
     private suspend fun onJson(payload: JsonObject) {
         val opCode = values().find { it.code == payload.getInt("op") }
         val data = payload.getObjectOrNull("d")
@@ -141,6 +159,10 @@ class GatewayClient(
 
                     data?.getStringOrNull("session_id")?.also { sessionId = it }
                 }
+
+
+                val handler = eventHandlers[type] ?: return
+                val entity = Json.decodeFromJsonElement(handler.entity.serializer(), data!!)
             }
 
             HEARTBEAT -> {
