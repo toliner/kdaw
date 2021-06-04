@@ -5,6 +5,8 @@ import org.slf4j.*
 abstract class Diskord(
     val token: String
 ) {
+    abstract suspend fun test()
+
     companion object {
         internal val LOGGER = LoggerFactory.getLogger("Diskord")
 
