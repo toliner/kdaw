@@ -25,9 +25,10 @@ class GatewayClient(
         install(WebSockets)
     }
 
-    lateinit var session: DefaultClientWebSocketSession
+    private lateinit var session: DefaultClientWebSocketSession
 
     suspend fun connect() {
+        Diskord.LOGGER.debug("Connecting...")
         val gatewayUrl = diskord.restClient.request(EndPoint(HttpMethod.Get, "/gateway"))?.getStringOrNull("url") ?: throw Exception("Failed to get gateway url.")
 
         session = client.request<HttpStatement>(gatewayUrl) {
@@ -36,13 +37,20 @@ class GatewayClient(
             parameter("compress", "zlib-stream")
         }.receive()
 
-        send(IDENTIFY) {
+        Diskord.LOGGER.debug("The connection was successfully established.")
+
+        if (sessionId == null) send(IDENTIFY) {
             "token" to diskord.token
+            "intents" to 513
             "properties" to {
                 "\$os" to "?"
                 "\$browser" to "?"
                 "\$device" to "?"
             }
+        } else send(RESUME) {
+            "session_id" to sessionId
+            "token" to diskord.token
+            "seq" to lastSequence
         }
 
         session.incoming.consumeEach {
@@ -57,18 +65,20 @@ class GatewayClient(
             is Frame.Binary -> onBinary(frame.data)
             is Frame.Close -> onClose()
             else -> {
-                Diskord.LOGGER.error("Received invalid frame!")
+                Diskord.LOGGER.error("Received invalid frame.")
             }
         }
     }
 
     private suspend fun send(opCode: OpCode, data: JsonBuilder.() -> Unit) {
-        val json = JsonBuilder().apply(data).build()
-
-        session.send(json {
+        val json = json {
             "op" to opCode.code
-            "d" to json.toString()
-        }.toString())
+            "d" to data
+        }.toString()
+
+        session.send(json)
+
+        Diskord.LOGGER.debug("S: $json")
     }
 
     private val buffer = mutableListOf<ByteArray>()
@@ -79,7 +89,7 @@ class GatewayClient(
 
         if (data.size < 4 || !data.takeLast(4).toByteArray().contentEquals(suffix)) return
 
-        val text = ByteArrayOutputStream().let {
+        val text = ByteArrayOutputStream().use {
             fun Collection<ByteArray>.concat(): ByteArray {
                 val length = sumOf { it.size }
                 val output = ByteArray(length)
@@ -93,13 +103,21 @@ class GatewayClient(
                 return output
             }
 
-            InflaterOutputStream(it, inflater).also { it.write(buffer.concat()) }
+            InflaterOutputStream(it, inflater).use { it.write(buffer.concat()) }
             it.toString(Charsets.UTF_8.toString())
         }
 
         buffer.clear()
 
-        onJson(text.asJsonObject())
+        Diskord.LOGGER.debug("R: $text")
+
+        val json = try {
+            text.asJsonObject()
+        } catch (e: Exception) {
+            return
+        }
+
+        onJson(json)
     }
 
     private val scope = CoroutineScope(Dispatchers.Default + CoroutineName("Gateway Client"))
@@ -123,9 +141,6 @@ class GatewayClient(
 
                     data?.getStringOrNull("session_id")?.also { sessionId = it }
                 }
-
-                println("Received $type")
-                println(data)
             }
 
             HEARTBEAT -> {
@@ -164,7 +179,14 @@ class GatewayClient(
         }
     }
 
-    private fun onClose() {
+    private suspend fun onClose() {
+        ready = false
+        heartbeatTask?.cancel()
+        buffer.clear()
 
+        inflater.reset()
+
+        connect()
     }
 }
+
