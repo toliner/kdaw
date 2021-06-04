@@ -155,10 +155,22 @@ open class EndPoint(
             class Get(guildId: Long): Prune(HttpMethod.Get, guildId)
             class Begin(guildId: Long): Prune(HttpMethod.Post, guildId)
         }
+
+        open class Template(method: HttpMethod, path: String = ""): Guild(method, path) {
+            class Get(templateCode: String): Template(HttpMethod.Get, "/templates/$templateCode")
+            class CreateGuildFromCode(templateCode: String): Template(HttpMethod.Post, "/templates/$templateCode")
+            class List(guildId: Long): Template(HttpMethod.Get, "/$guildId/templates")
+            class Create(guildId: Long): Template(HttpMethod.Post, "/$guildId/templates")
+            class Sync(guildId: Long, templateCode: String): Template(HttpMethod.Put, "/$guildId/templates/$templateCode")
+            class Modify(guildId: Long, templateCode: String): Template(HttpMethod.Patch, "/$guildId/templates/$templateCode")
+            class Delete(guildId: Long, templateCode: String): Template(HttpMethod.Delete, "/$guildId/templates/$templateCode")
+        }
     }
 
-    class GuildTemplate
-    class Invite
+    open class Invite(method: HttpMethod, inviteCode: String): EndPoint(method, "/invites/$inviteCode") {
+        class Get(inviteCode: String): Invite(HttpMethod.Get, inviteCode)
+        class Delete(inviteCode: String): Invite(HttpMethod.Delete, inviteCode)
+    }
     class StageInstance
     class User
     class Voice
