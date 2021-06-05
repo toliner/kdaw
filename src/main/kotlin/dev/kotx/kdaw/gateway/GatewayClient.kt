@@ -131,20 +131,7 @@ class GatewayClient(
     private var ready = false
     private var sessionId: String? = null
 
-    private val eventHandlers = mutableListOf<GatewayHandler>().map {
-        var result = ""
-        var lastChar: Char? = null
-        it::class.simpleName!!.replace("Handler", "").forEach {
-            if (lastChar?.isLowerCase() == true && it.isUpperCase()) {
-                result += "_"
-            }
-
-            result += it
-            lastChar = it
-        }
-
-        result to it
-    }.toMap()
+    private val eventHandlers = mutableListOf<GatewayHandler>()
 
     @OptIn(InternalSerializationApi::class)
     private suspend fun onJson(payload: JsonObject) {
@@ -163,7 +150,7 @@ class GatewayClient(
                 }
 
 
-                val handler = eventHandlers[type] ?: return
+                val handler = eventHandlers.find { it.type == type } ?: return
                 handler.handle(kdaw, data)
             }
 
