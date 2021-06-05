@@ -1,6 +1,8 @@
 package dev.kotx.kdaw.entity.server.emoji
 
-interface PartialEmoji {
+import dev.kotx.kdaw.entity.*
+
+interface PartialEmoji: Parseable {
     val name: String
     val id: Long?
     val animated: Boolean?
