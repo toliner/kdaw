@@ -2,7 +2,6 @@ package dev.kotx.kdaw.rest
 
 import dev.kotx.kdaw.*
 import dev.kotx.kdaw.util.*
-import dev.kotx.kdaw.util.JsonBuilder
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
@@ -25,18 +24,16 @@ class RestClient(
 
     suspend fun request(
         endPoint: EndPoint,
-        data: JsonBuilder.() -> Unit = {}
+        data: JsonElement? = null
     ): JsonObject? {
         val response = client.request<HttpStatement>(Kdaw.ENDPOINT + endPoint.url) {
             method = endPoint.method
 
-            val json = JsonBuilder().apply(data).build()
-
             if (endPoint.method == HttpMethod.Get) {
-                json.entries.filter { it.value is JsonPrimitive }.forEach { parameter(it.key, it.value.toString()) }
+                data?.jsonObject?.entries?.filter { it.value is JsonPrimitive }?.forEach { parameter(it.key, it.value.toString()) }
             } else {
                 contentType(ContentType.Application.Json)
-                body = json.toString()
+                body = data.toString()
             }
         }.execute()
 
