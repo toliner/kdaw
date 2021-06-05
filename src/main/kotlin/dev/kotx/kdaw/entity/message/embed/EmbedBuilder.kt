@@ -56,86 +56,103 @@ class EmbedBuilder {
     }
 
     fun append(content: String): EmbedBuilder {
+        if (this.description == null) this.description = ""
         this.description += content
         return this
     }
 
     fun appendln(content: String): EmbedBuilder {
+        if (this.description == null) this.description = ""
         this.description += "$content\n"
         return this
     }
 
     fun mention(vararg target: Mentionable): EmbedBuilder {
-        description += target.joinToString(" ") { it.mention }
+        if (this.description == null) this.description = ""
+        this.description += target.joinToString(" ") { it.mention }
         return this
     }
 
     fun mentionln(vararg target: Mentionable): EmbedBuilder {
-        description += "${target.joinToString(" ") { it.mention }}\n"
+        if (this.description == null) this.description = ""
+        this.description += "${target.joinToString(" ") { it.mention }}\n"
         return this
     }
 
     fun mentionUser(vararg target: Long): EmbedBuilder {
-        description += target.joinToString(" ") { "<@$it>" }
+        if (this.description == null) this.description = ""
+        this.description += target.joinToString(" ") { "<@$it>" }
         return this
     }
 
     fun mentionMember(vararg target: Long): EmbedBuilder {
-        description += target.joinToString(" ") { "<@!$it>" }
+        if (this.description == null) this.description = ""
+        this.description += target.joinToString(" ") { "<@!$it>" }
         return this
     }
 
     fun mentionChannel(vararg target: Long): EmbedBuilder {
-        description += target.joinToString(" ") { "<#$it>" }
+        if (this.description == null) this.description = ""
+        this.description += target.joinToString(" ") { "<#$it>" }
         return this
     }
 
     fun mentionRole(vararg target: Long): EmbedBuilder {
-        description += target.joinToString(" ") { "<@&$it>" }
+        if (this.description == null) this.description = ""
+        this.description += target.joinToString(" ") { "<@&$it>" }
         return this
     }
 
     fun mentionEmoji(name: String, id: Long): EmbedBuilder {
-        description += "<:$name:$id>"
+        if (this.description == null) this.description = ""
+        this.description += "<:$name:$id>"
         return this
     }
 
     fun mentionAnimatedEmoji(name: String, id: Long): EmbedBuilder {
-        description += "<a:$name:$id>"
+        if (this.description == null) this.description = ""
+        this.description += "<a:$name:$id>"
         return this
     }
 
     fun mentionUserln(vararg target: Long): EmbedBuilder {
-        description += "${target.joinToString(" ") { "<@$it>" }}\n"
+        if (this.description == null) this.description = ""
+        this.description += "${target.joinToString(" ") { "<@$it>" }}\n"
         return this
     }
 
     fun mentionMemberln(vararg target: Long): EmbedBuilder {
-        description += "${target.joinToString(" ") { "<@!$it>" }}\n"
+        if (this.description == null) this.description = ""
+        this.description += "${target.joinToString(" ") { "<@!$it>" }}\n"
         return this
     }
 
     fun mentionChannelln(vararg target: Long): EmbedBuilder {
-        description += "${target.joinToString(" ") { "<#$it>" }}\n"
+        if (this.description == null) this.description = ""
+        this.description += "${target.joinToString(" ") { "<#$it>" }}\n"
         return this
     }
 
     fun mentionRoleln(vararg target: Long): EmbedBuilder {
-        description += "${target.joinToString(" ") { "<@&$it>" }}\n"
+        if (this.description == null) this.description = ""
+        this.description += "${target.joinToString(" ") { "<@&$it>" }}\n"
         return this
     }
 
     fun mentionEmojiln(name: String, id: Long): EmbedBuilder {
-        description += "<:$name:$id>\n"
+        if (this.description == null) this.description = ""
+        this.description += "<:$name:$id>\n"
         return this
     }
 
     fun mentionAnimatedEmojiln(name: String, id: Long): EmbedBuilder {
-        description += "<a:$name:$id>\n"
+        if (this.description == null) this.description = ""
+        this.description += "<a:$name:$id>\n"
         return this
     }
 
     operator fun String.unaryPlus(): EmbedBuilder {
+        if (this@EmbedBuilder.description == null) this@EmbedBuilder.description = ""
         this@EmbedBuilder.description += "$this\n"
         return this@EmbedBuilder
     }
