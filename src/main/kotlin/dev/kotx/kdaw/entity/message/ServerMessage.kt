@@ -2,6 +2,7 @@ package dev.kotx.kdaw.entity.message
 
 import dev.kotx.kdaw.entity.*
 import dev.kotx.kdaw.entity.channel.*
+import dev.kotx.kdaw.entity.message.attachment.*
 import dev.kotx.kdaw.entity.server.*
 import dev.kotx.kdaw.entity.server.channel.text.*
 import dev.kotx.kdaw.entity.server.member.*
@@ -28,4 +29,6 @@ interface ServerMessage: Entity, AbstractMessage {
     val mentionsEveryone: Boolean
 
     val pinned: Boolean
+
+    val attachments: List<Attachment>?
 }
