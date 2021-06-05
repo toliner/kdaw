@@ -19,87 +19,88 @@ class MessageBuilder {
     }
 
     fun append(content: String): MessageBuilder {
+        if (this.content == null) this.content = ""
         this.content += content
         return this
     }
 
     fun appendln(content: String): MessageBuilder {
-        this.content += "$content\n"
+        append("$content\n")
         return this
     }
 
     fun mention(vararg target: Mentionable): MessageBuilder {
-        content += target.joinToString(" ") { it.mention }
+        append(target.joinToString(" ") { it.mention })
         return this
     }
 
     fun mentionln(vararg target: Mentionable): MessageBuilder {
-        content += "${target.joinToString(" ") { it.mention }}\n"
+        appendln(target.joinToString(" ") { it.mention })
         return this
     }
 
     fun mentionUser(vararg target: Long): MessageBuilder {
-        content += target.joinToString(" ") { "<@$it>" }
+        append(target.joinToString(" ") { "<@$it>" })
         return this
     }
 
     fun mentionMember(vararg target: Long): MessageBuilder {
-        content += target.joinToString(" ") { "<@!$it>" }
+        append(target.joinToString(" ") { "<@$it>" })
         return this
     }
 
     fun mentionChannel(vararg target: Long): MessageBuilder {
-        content += target.joinToString(" ") { "<#$it>" }
+        append(target.joinToString(" ") { "<#$it>" })
         return this
     }
 
     fun mentionRole(vararg target: Long): MessageBuilder {
-        content += target.joinToString(" ") { "<@&$it>" }
+        append(target.joinToString(" ") { "<@&$it>" })
         return this
     }
 
     fun mentionEmoji(name: String, id: Long): MessageBuilder {
-        content += "<:$name:$id>"
+        append("<:$name:$id>")
         return this
     }
 
     fun mentionAnimatedEmoji(name: String, id: Long): MessageBuilder {
-        content += "<a:$name:$id>"
+        append("<a:$name:$id>")
         return this
     }
 
     fun mentionUserln(vararg target: Long): MessageBuilder {
-        content += "${target.joinToString(" ") { "<@$it>" }}\n"
+        appendln(target.joinToString(" ") { "<@$it>" })
         return this
     }
 
     fun mentionMemberln(vararg target: Long): MessageBuilder {
-        content += "${target.joinToString(" ") { "<@!$it>" }}\n"
+        appendln(target.joinToString(" ") { "<@!$it>" })
         return this
     }
 
     fun mentionChannelln(vararg target: Long): MessageBuilder {
-        content += "${target.joinToString(" ") { "<#$it>" }}\n"
+        appendln(target.joinToString(" ") { "<#$it>" })
         return this
     }
 
     fun mentionRoleln(vararg target: Long): MessageBuilder {
-        content += "${target.joinToString(" ") { "<@&$it>" }}\n"
+        appendln(target.joinToString(" ") { "<@&$it>" })
         return this
     }
 
     fun mentionEmojiln(name: String, id: Long): MessageBuilder {
-        content += "<:$name:$id>\n"
+        appendln("<:$name:$id>")
         return this
     }
 
     fun mentionAnimatedEmojiln(name: String, id: Long): MessageBuilder {
-        content += "<a:$name:$id>\n"
+        appendln("<a:$name:$id>")
         return this
     }
 
     operator fun String.unaryPlus(): MessageBuilder {
-        this@MessageBuilder.content += "$this\n"
+        appendln(this)
         return this@MessageBuilder
     }
 

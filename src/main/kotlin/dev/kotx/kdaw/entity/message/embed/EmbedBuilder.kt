@@ -1,6 +1,5 @@
 package dev.kotx.kdaw.entity.message.embed
 
-import dev.kotx.kdaw.entity.*
 import java.awt.*
 import java.time.*
 
@@ -62,98 +61,12 @@ class EmbedBuilder {
     }
 
     fun appendln(content: String): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += "$content\n"
-        return this
-    }
-
-    fun mention(vararg target: Mentionable): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += target.joinToString(" ") { it.mention }
-        return this
-    }
-
-    fun mentionln(vararg target: Mentionable): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += "${target.joinToString(" ") { it.mention }}\n"
-        return this
-    }
-
-    fun mentionUser(vararg target: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += target.joinToString(" ") { "<@$it>" }
-        return this
-    }
-
-    fun mentionMember(vararg target: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += target.joinToString(" ") { "<@!$it>" }
-        return this
-    }
-
-    fun mentionChannel(vararg target: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += target.joinToString(" ") { "<#$it>" }
-        return this
-    }
-
-    fun mentionRole(vararg target: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += target.joinToString(" ") { "<@&$it>" }
-        return this
-    }
-
-    fun mentionEmoji(name: String, id: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += "<:$name:$id>"
-        return this
-    }
-
-    fun mentionAnimatedEmoji(name: String, id: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += "<a:$name:$id>"
-        return this
-    }
-
-    fun mentionUserln(vararg target: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += "${target.joinToString(" ") { "<@$it>" }}\n"
-        return this
-    }
-
-    fun mentionMemberln(vararg target: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += "${target.joinToString(" ") { "<@!$it>" }}\n"
-        return this
-    }
-
-    fun mentionChannelln(vararg target: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += "${target.joinToString(" ") { "<#$it>" }}\n"
-        return this
-    }
-
-    fun mentionRoleln(vararg target: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += "${target.joinToString(" ") { "<@&$it>" }}\n"
-        return this
-    }
-
-    fun mentionEmojiln(name: String, id: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += "<:$name:$id>\n"
-        return this
-    }
-
-    fun mentionAnimatedEmojiln(name: String, id: Long): EmbedBuilder {
-        if (this.description == null) this.description = ""
-        this.description += "<a:$name:$id>\n"
+        append("$content\n")
         return this
     }
 
     operator fun String.unaryPlus(): EmbedBuilder {
-        if (this@EmbedBuilder.description == null) this@EmbedBuilder.description = ""
-        this@EmbedBuilder.description += "$this\n"
+        appendln(this)
         return this@EmbedBuilder
     }
 
