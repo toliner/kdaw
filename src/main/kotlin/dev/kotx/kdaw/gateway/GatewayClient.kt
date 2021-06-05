@@ -131,17 +131,19 @@ class GatewayClient(
     private var ready = false
     private var sessionId: String? = null
 
-    private val eventHandlers = GatewayEvent::class.nestedClasses.map {
-        var name = ""
+    private val eventHandlers = mutableListOf<GatewayHandler>().map {
+        var result = ""
         var lastChar: Char? = null
-        it.simpleName!!.forEach {
-            if (lastChar?.isLowerCase() == true && it.isUpperCase())
-                name += "_"
+        it::class.simpleName!!.replace("Handler", "").forEach {
+            if (lastChar?.isLowerCase() == true && it.isUpperCase()) {
+                result += "_"
+            }
+
+            result += it
             lastChar = it
-            name += it
         }
 
-        name.uppercase() to it.objectInstance as GatewayEvent
+        result to it
     }.toMap()
 
     @OptIn(InternalSerializationApi::class)
@@ -162,7 +164,7 @@ class GatewayClient(
 
 
                 val handler = eventHandlers[type] ?: return
-                val entity = Json.decodeFromJsonElement(handler.entity.serializer(), data!!)
+                handler.handle(kdaw, data)
             }
 
             HEARTBEAT -> {
