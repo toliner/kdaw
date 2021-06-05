@@ -14,4 +14,6 @@ interface AnnouncementChannel : ServerChannel, Mentionable, TextChannel {
 
     override val mention: String
         get() = "<#$id>"
+
+    suspend fun crosspostMessage(messageId: Long)
 }
