@@ -1,11 +1,12 @@
 package dev.kotx.kdaw.entity.message
 
+import dev.kotx.kdaw.entity.*
 import dev.kotx.kdaw.entity.message.component.*
 import dev.kotx.kdaw.entity.message.embed.*
 
-interface AbstractMessage {
+interface AbstractMessage: Parseable {
     val content: String?
-    val embeds: List<Embed>?
-    val components: List<Component>?
     val tts: Boolean?
+    val embed: Embed?
+    val components: List<Component>?
 }
