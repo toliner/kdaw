@@ -10,6 +10,6 @@ class KdawImpl(token: String, val listeners: MutableMap<KClass<out Event>, KFunc
     val gatewayClient = GatewayClient(this)
 
     override suspend fun test() {
-        gatewayClient.connect()
+
     }
 }
