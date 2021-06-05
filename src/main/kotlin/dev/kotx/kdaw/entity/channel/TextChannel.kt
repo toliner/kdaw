@@ -5,5 +5,5 @@ import dev.kotx.kdaw.entity.message.*
 
 interface TextChannel: Entity {
     suspend fun send(text: String)
-    suspend fun send(message: Message)
+    suspend fun send(message: ServerMessage)
 }
