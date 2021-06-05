@@ -10,7 +10,7 @@ class MessageBuilder {
 
     private var tts: Boolean = false
 
-    private val embeds: MutableList<Embed> = mutableListOf()
+    private var embed: Embed? = null
     private val components: MutableList<Component> = mutableListOf()
 
     fun content(content: String): MessageBuilder {
@@ -109,44 +109,26 @@ class MessageBuilder {
     }
 
     fun embed(embed: Embed): MessageBuilder {
-        embeds.add(embed)
+        this.embed = embed
         return this
     }
 
     fun embed(builder: EmbedBuilder.() -> Unit): MessageBuilder {
-        embeds.add(EmbedBuilder().apply(builder).build())
+        this.embed = EmbedBuilder().apply(builder).build()
         return this
     }
 
     operator fun (EmbedBuilder.() -> Unit).unaryPlus(): MessageBuilder {
-        embeds.add(EmbedBuilder().apply(this).build())
+        this@MessageBuilder.embed = EmbedBuilder().apply(this).build()
         return this@MessageBuilder
     }
 
-    fun component(component: Component): MessageBuilder {
-        components.add(component)
-        return this
-    }
-
-    fun button(builder: ButtonComponentBuilder.() -> Unit): MessageBuilder {
-        components.add(ButtonComponentBuilder().apply(builder).build())
-        return this
-    }
-
-    fun actionRow(builder: ActionRowBuilder.() -> Unit): MessageBuilder {
+    fun component(builder: ActionRowBuilder.() -> Unit): MessageBuilder {
         components.add(ActionRowBuilder().apply(builder).build())
         return this
     }
 
-    operator fun Component.unaryPlus(): MessageBuilder {
-        this@MessageBuilder.components.add(this)
-        return this@MessageBuilder
-    }
-
     fun build(): AbstractMessage = AbstractMessageImpl(
-        content,
-        embeds,
-        components,
-        tts
+        content, tts, embed, components
     )
 }
