@@ -40,5 +40,6 @@ enum class Permission(val shift: Int) {
 
     companion object {
         fun calculate(vararg permissions: Permission) = permissions.sumOf { 1 shl it.shift }
+        fun calculate(permissions: List<Permission>) = permissions.sumOf { 1 shl it.shift }
     }
 }
