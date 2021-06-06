@@ -5,10 +5,10 @@ import dev.kotx.kdaw.entity.channel.*
 import dev.kotx.kdaw.entity.server.channel.*
 import dev.kotx.kdaw.entity.server.channel.category.*
 
-interface AnnouncementChannel : ServerChannel, Mentionable, TextChannel {
+interface NewsChannel : ServerChannel, Mentionable, TextChannel, Updatable {
     val topic: String?
 
-    val nsfw: Boolean
+    val isNsfw: Boolean
 
     val category: ServerCategory?
 
@@ -16,4 +16,6 @@ interface AnnouncementChannel : ServerChannel, Mentionable, TextChannel {
         get() = "<#$id>"
 
     suspend fun crosspostMessage(messageId: Long)
+
+    suspend fun edit(editor: NewsChannelEditor.() -> Unit)
 }
