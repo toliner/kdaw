@@ -50,7 +50,7 @@ interface Server: Nameable, Entity {
 
     val categories: List<ServerCategory>
 
-    val announcementChannels: List<AnnouncementChannel>
+    val newsChannels: List<NewsChannel>
 
     val storeChannels: List<StoreChannel>
 
