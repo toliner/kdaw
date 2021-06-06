@@ -5,7 +5,7 @@ import dev.kotx.kdaw.gateway.*
 import dev.kotx.kdaw.rest.*
 import kotlin.reflect.*
 
-class KdawImpl(token: String, val listeners: MutableMap<KClass<out Event>, KFunction<Unit>>, val intents: Int) : Kdaw(token) {
+internal class KdawImpl(override val token: String, val listeners: MutableMap<KClass<out Event>, KFunction<Unit>>, val intents: Int) : Kdaw {
     val restClient = RestClient(this)
     val gatewayClient = GatewayClient(this)
 

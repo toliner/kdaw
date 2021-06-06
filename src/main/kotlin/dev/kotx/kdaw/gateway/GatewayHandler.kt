@@ -4,5 +4,5 @@ import dev.kotx.kdaw.*
 import kotlinx.serialization.json.*
 
 abstract class GatewayHandler(val type: String) {
-    abstract fun handle(kdaw: KdawImpl, data: JsonObject?)
+    abstract fun handle(kdaw: Kdaw, data: JsonObject?)
 }

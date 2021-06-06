@@ -3,10 +3,9 @@ package dev.kotx.kdaw
 import io.ktor.client.*
 import org.slf4j.*
 
-abstract class Kdaw(
+interface Kdaw {
     val token: String
-) {
-    abstract suspend fun test()
+    suspend fun test()
 
     companion object {
         internal val LOGGER = LoggerFactory.getLogger("Kdaw")

@@ -10,7 +10,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.json.*
 
-class RestClient(
+class RestClient internal constructor(
     private val kdaw: KdawImpl
 ) {
     private val client = HttpClient {
@@ -38,11 +38,7 @@ class RestClient(
             }
         }.execute()
 
-        return try {
-            response.readText().asJsonObject()
-        } catch (e: Exception) {
-            null
-        }
+        return runCatching { response.readText().asJsonObject() }.getOrNull()
     }
 
     suspend fun request(endPoint: EndPoint, builder: JsonBuilder.() -> Unit): JsonObject? = request(endPoint, JsonBuilder().apply(builder).build())

@@ -22,8 +22,8 @@ import java.io.*
 import java.util.zip.*
 
 @OptIn(InternalAPI::class)
-class GatewayClient(
-    val kdaw: KdawImpl
+class GatewayClient internal constructor(
+    private val kdaw: KdawImpl
 ) {
     private val client = HttpClient {
         install(WebSockets)
