@@ -4,7 +4,7 @@ import dev.kotx.kdaw.entity.*
 import dev.kotx.kdaw.entity.server.*
 import dev.kotx.kdaw.entity.server.permission.*
 
-interface ServerChannel: Nameable, Entity {
+interface ServerChannel : Nameable, Entity {
     val server: Server
 
     val position: Int
