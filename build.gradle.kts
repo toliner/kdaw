@@ -28,6 +28,9 @@ tasks {
     compileKotlin {
         targetCompatibility = "1.8"
         sourceCompatibility = "1.8"
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+        }
     }
 
     test {

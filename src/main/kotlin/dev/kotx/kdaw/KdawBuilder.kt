@@ -12,7 +12,8 @@ class KdawBuilder(
     val listeners = mutableMapOf<KClass<out Event>, KFunction<Unit>>()
     private var intents = 0
 
-    @Suppress("EXPERIMENTAL_API_USAGE", "UNCHECKED_CAST")
+    @OptIn(ExperimentalReflectionOnLambdas::class)
+    @Suppress("UNCHECKED_CAST")
     inline fun <reified T : Event> listen(noinline action: suspend (T) -> Unit): KdawBuilder {
         val func = action.reflect()!!
         listeners[func.parameters[0].type.classifier as KClass<out Event>] = func
