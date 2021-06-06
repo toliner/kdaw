@@ -2,6 +2,7 @@ package dev.kotx.kdaw.rest
 
 import dev.kotx.kdaw.*
 import dev.kotx.kdaw.util.*
+import dev.kotx.kdaw.util.JsonBuilder
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
@@ -43,4 +44,6 @@ class RestClient(
             null
         }
     }
+
+    suspend fun request(endPoint: EndPoint, builder: JsonBuilder.() -> Unit): JsonObject? = request(endPoint, JsonBuilder().apply(builder).build())
 }
